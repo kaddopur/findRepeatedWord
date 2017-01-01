@@ -18,46 +18,59 @@
 		</div>
 		<div class="ui segment">
 			<div class="ui action input">
-				<input type="text" id="targetWord" placeholder="Keyword..." onchange="getWord()">
-				<button class="ui icon button" onclick="countWord()">
-					<i class="search icon"></i>
+				<input type="text" id="targetWord" placeholder="Keyword..." onchange="getword()">
+				<button class="ui icon button" onclick="countWord()">Get Result!
 				</button>
+			</div>
+			<div class="ui checkbox" style="margin-left: 1em">
+					<input type="checkbox" id="caseCheckbox" onchange="changeCaseInsensitive()" value="true">
+					<label>Case insensitive (treat 'A' and 'a' as the same)</label>
 			</div>
 		</div>
 		<div class="ui segment">
 			<p id="result" style="margin-top: 2em"></p>
+			<p id="caculatedResult"></p>
 		</div>	
 	</div>
 		
 	</body>
 
 	<script>
+		var keyWord = "";
+		var uploadText = "";
+		var caseInsensitive = false;
 		function handleUploadFile(fileList){
 			if(typeof(fileList) === "undefined"){
-				return alert("please upload a txt file");
+				return ;
 			}
 			var file = fileList[0];
 			var reader = new FileReader();
 			reader.onload = function(e){
 				document.getElementById("result").innerHTML = e.target.result;
-				return e.target.result;
+				return uploadText = e.target.result;
 			}			
 			reader.readAsText(file);
 		}	
+		function getword(){
+			keyWord = document.getElementById("targetWord").value;	
+		}
 
-		function getWord(){	
-			var word = document.getElementById("targetWord").value;	
-			if(typeof(word) === "undefined"){
-				return alert("please enter keyword first!");
-			}
-			return word;
-		}	
-
+		function changeCaseInsensitive(){
+			var checkboxStatus = document.querySelector("input[type=checkbox]");
+			caseInsensitive = checkboxStatus.checked ? "true" : "false";
+		}
 		function countWord(){
-			// if((!handleUploadFile()) || !getWord()){
-			// 	alert("error");
-			// }
-			handleUploadFile();
+			if( uploadText.length == 0 ){
+				return alert("please upload txt file");
+			}
+
+			if( keyWord.length == 0){
+				return alert("please enter keyword");
+			}
+			var matchkeyword = (caseInsensitive == "true") ? new RegExp(keyWord, "gi") : new RegExp(keyWord, "g");
+			var result = uploadText.match(matchkeyword);
+			var wordCount = ( result == null ) ? 0 : result.length;  
+			document.getElementById("caculatedResult").innerHTML = "The word <strong>"+ keyWord + "</strong> repeated <strong>"+wordCount+ "</strong> times.";
 		}
 	</script>
 </html>
