@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<script type="text/javascript" src=""></script>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.css">
+	</head>
+
+	<body>
+	<div class="ui segments" style="margin-top: 2em; margin-left: 2em; margin-right: 2em">
+		<div class="ui segment">
+		 	<i class="info circle icon" style="font-size: 2em"></i>
+		 	<h1 style="display: inline;">Find the repeated word</h1>	
+		</div>
+		<div class="ui segment">
+			<div class="ui labeled input input">
+				<div class="ui label">upload file:</div>
+			<input type="file" name="uploadFile" id="uploadFile" multiple onchange="handleUploadFile(this.files)">
+			</div>
+		</div>
+		<div class="ui segment">
+			<div class="ui action input">
+				<input type="text" id="targetWord" placeholder="Keyword..." onchange="getWord()">
+				<button class="ui icon button" onclick="countWord()">
+					<i class="search icon"></i>
+				</button>
+			</div>
+		</div>
+		<div class="ui segment">
+			<p id="result" style="margin-top: 2em"></p>
+		</div>	
+	</div>
+		
+	</body>
+
+	<script>
+		function handleUploadFile(fileList){
+			if(typeof(fileList) === "undefined"){
+				return alert("please upload a txt file");
+			}
+			var file = fileList[0];
+			var reader = new FileReader();
+			reader.onload = function(e){
+				document.getElementById("result").innerHTML = e.target.result;
+				return e.target.result;
+			}			
+			reader.readAsText(file);
+		}	
+
+		function getWord(){	
+			var word = document.getElementById("targetWord").value;	
+			if(typeof(word) === "undefined"){
+				return alert("please enter keyword first!");
+			}
+			return word;
+		}	
+
+		function countWord(){
+			// if((!handleUploadFile()) || !getWord()){
+			// 	alert("error");
+			// }
+			handleUploadFile();
+		}
+	</script>
+</html>
